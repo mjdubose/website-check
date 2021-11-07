@@ -4,11 +4,10 @@ const https = require('https');
 const {URL} = require('url');
 const StringDecoder = require('string_decoder').StringDecoder;
 const fs = require('fs');
-
 const config = require ('./config');
+const _data = require('./lib/data');
 
 //The server should respond to all requests with a string
-
 // Instantiate the HTTP server
 
 const httpServer = http.createServer(function (req, res) {
@@ -103,19 +102,18 @@ const handlers = {};
 
 // define the handlers
 
-handlers.sample = (data, callback) => {
-    //Callback a http status code and payload object
-
-    callback(406, {'name': 'sample handler'})
+//ping handler
+handlers.ping = (data, callback) => {
+    callback(200)
 };
 
-handlers.notFound = (data, callback) => {
 
+handlers.notFound = (data, callback) => {
     callback(404)
 };
 
 //define a request router
 
 const router = {
-    sample: handlers.sample
+    ping: handlers.ping,
 }
