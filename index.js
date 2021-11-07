@@ -5,7 +5,8 @@ const {URL} = require('url');
 const StringDecoder = require('string_decoder').StringDecoder;
 const fs = require('fs');
 const config = require ('./config');
-const _data = require('./lib/data');
+const handlers = require('./lib/handlers');
+const helpers = require('./lib/helpers');
 
 //The server should respond to all requests with a string
 // Instantiate the HTTP server
@@ -74,7 +75,7 @@ const unifiedServer = (req,res)=>{
             'queryStringObject': queryStringObject,
             'method': method,
             'headers': headers,
-            'payload': buffer
+            'payload': helpers.parseJsonToObject(buffer)
         };
 
         //route the request to the handler specified in the router;
@@ -97,23 +98,9 @@ const unifiedServer = (req,res)=>{
     });
 
 }
-//define the handlers
-const handlers = {};
-
-// define the handlers
-
-//ping handler
-handlers.ping = (data, callback) => {
-    callback(200)
-};
-
-
-handlers.notFound = (data, callback) => {
-    callback(404)
-};
 
 //define a request router
-
 const router = {
     ping: handlers.ping,
+    users: handlers.users
 }
